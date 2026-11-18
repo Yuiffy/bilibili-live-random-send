@@ -1,0 +1,249 @@
+.danmu-group-title {
+  font-size: 14px;
+  padding-left: 2px;
+  color: rgb(18, 56, 141);
+  display: inline;
+  margin-right: 60%;
+  vertical-align: middle;
+}
+.danmu-group-textarea {
+  width: 98%;
+  min-height: 100px;
+  height: 16%;
+  margin: 1px 0px 4px;
+  border: 0px;
+  resize: none;
+}
+.el-button {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  -webkit-appearance: none;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 0;
+  margin: 0;
+  -webkit-transition: 0.1s;
+  transition: 0.1s;
+  font-weight: 500;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+.el-button.is-circle {
+  border-radius: 50%;
+  padding: 12px;
+}
+.el-button--mini.is-circle {
+  padding: 3px;
+}
+.el-button:focus,
+.el-button:hover {
+  color: #409eff;
+  border-color: #c6e2ff;
+  background-color: #ecf5ff;
+}
+.el-icon-close.is-circle {
+  padding: 5px;
+  color: #ff0000;
+  border: 1px solid #ff0000;
+  margin-left: 20px;
+}
+.el-icon-check.is-circle {
+  padding: 5px;
+  color: #0000ff;
+  border: 1px solid #0000ff;
+  margin-left: 20px;
+}
+#danmu-setting-panel input[type="checkbox"] {
+  display: none;
+}
+.switch-check {
+  display: inline-block;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+.switch-check-label {
+  display: inline-block;
+  vertical-align: middle;
+  border: 1px solid #bdc3c7;
+  border-radius: 60px;
+  width: 40px;
+  height: 18px;
+  position: relative;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.switch-check-label:before {
+  width: 14px;
+  height: 14px;
+  content: "";
+  display: inline-block;
+  background-color: #bdc3c7;
+  border-radius: 100%;
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  transition: all 0.3s;
+}
+.switch-check :checked ~ label {
+  background-color: #26b22b;
+  border-color: #26b22b;
+}
+.switch-check :checked ~ label:before {
+  left: 22px;
+  background-color: #fff;
+}
+.switch-check-group {
+  margin-top: 5px;
+  width: 95%;
+}
+.danmu-random-setting-panel {
+  background-color: #e7f1fb;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 999;
+  display: none;
+}
+.danmu-random-setting-panel::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.danmu-random-setting-panel::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+.danmu-random-setting-panel::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+.danmu-random-setting-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1c5adc;
+  line-height: 30px;
+}
+.danmu-random-setting-title-sub {
+  display: inline-block;
+  color: #ee8b8b;
+  height: 24px;
+  vertical-align: sub;
+  -webkit-transform: scale(0.7);
+}
+.danmu-random-setting-tips {
+  color: #0b81cc;
+  text-align: center;
+  font-style: italic;
+}
+.module-update-info {
+  color: #0b81cc;
+  text-indent: 2em;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 8px 0;
+  padding: 2px 0;
+  background-color: #ffffff;
+}
+.update-info-text {
+  color: #f00;
+  vertical-align: -webkit-baseline-middle;
+}
+.danmu-random-setting-bottom {
+  width: 100%;
+  line-height: 35px;
+}
+.danmu-random-switch-button-title {
+  font-size: 14px;
+  vertical-align: middle;
+  margin-left: 5px;
+  color: #095ca2;
+  cursor: help;
+}
+.danmu-random-setting-success-tips {
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  width: 40%;
+}
+.danmu-random-setting-success-text {
+  font-size: 16px;
+  color: #128712;
+  display: none;
+}
+.danmu-random-set-button-container {
+  display: inline-block;
+  vertical-align: middle;
+}
+.global-setting-tip {
+  padding-left: 10px;
+  color: red;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: help;
+}
+.disabled {
+  color: #ababab;
+  cursor: not-allowed;
+}
+.clean-cache-btn {
+  min-width: 70px;
+  font-size: 14px;
+  border-radius: 4px;
+  color: #fff;
+  background: #d99d1b;
+  border: 0px;
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 30px;
+}
+.clean-cache-btn:hover {
+  background: rgba(217, 157, 27, 0.8);
+  color: #000;
+}
+.danmu-btn {
+  min-width: 65px;
+  height: 24px;
+  font-size: 12px;
+  border-radius: 4px;
+  color: rgb(255, 255, 255);
+  background: rgb(217, 157, 27);
+  border: 0px;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.danmu-btn:hover {
+  background: var(--color) !important;
+}
+.danmu-text-span {
+  color: #095ca2;
+  font-size: 20px;
+  vertical-align: middle;
+  font-weight: 700;
+}
+.danmu-second-input {
+  width: 70px;
+  height: 20px;
+  margin: 0px 3px;
+  border: 0px;
+  border-radius: 3px;
+  font-size: 18px;
+}
+.not-display {
+  display: none !important;
+}

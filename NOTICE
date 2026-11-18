@@ -1,0 +1,15 @@
+Bilibili Live Random Send — Floating Maintenance Fork
+
+Original work: Gamyou
+Upstream: https://github.com/Gamyou/bilibili-live-random-send
+Based on userscript 2.5.0.1 and functional module 1.7.5.3.
+Distributed under the Apache License, Version 2.0; see LICENSE.
+
+Modifications by Yuiffy, 2026-11-18:
+- Reconstructed the upstream compressed runtime as readable local source.
+- Replaced legacy UI mounting with draggable root-mounted floating controls.
+- Replaced automatic-like scheduling and robust live-room button detection.
+- Bundled all functional code locally, removed the remote module loader.
+- Added migration, draft protection, diagnostics, tests and build tooling.
+
+This fork is maintained independently and is not an official upstream release.
