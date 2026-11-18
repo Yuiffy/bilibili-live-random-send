@@ -4,7 +4,9 @@
 
 ## 安装
 
-先安装 Tampermonkey 等用户脚本管理器，再打开 [完整脚本安装链接](https://raw.githubusercontent.com/Yuiffy/bilibili-live-random-send/master/dist/bilibili-live-random-send.user.js)。也可从 [Releases](https://github.com/Yuiffy/bilibili-live-random-send/releases/latest) 下载 `.user.js`。
+推荐从 [Greasy Fork 发布页](https://greasyfork.org/zh-CN/scripts/606129) 安装并接收后续更新。
+
+也可先安装 Tampermonkey 等用户脚本管理器，再打开 [完整脚本安装链接](https://raw.githubusercontent.com/Yuiffy/bilibili-live-random-send/master/dist/bilibili-live-random-send.user.js)。也可从 [Releases](https://github.com/Yuiffy/bilibili-live-random-send/releases/latest) 下载 `.user.js`。
 
 已有原版或此前修复版的用户：先备份脚本与配置，再进入**现有脚本的编辑器**，用新版本完整代码替换并保存，可继续读取该脚本已有的房间配置。安装为另一个脚本不会自动共享旧脚本的存储；不要同时启用两个版本，以免重复发送或点赞。
 
