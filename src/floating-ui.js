@@ -1,4 +1,5 @@
 // Modified by Yuiffy on 2026-11-18. Apache-2.0.
+import { installFloatingPosition } from "./floating-position.js";
 export function installFloatingUi(api) {
   if (document.getElementById("rsh-floating-tools")) return;
   api.createPanel();
@@ -8,7 +9,7 @@ export function installFloatingUi(api) {
   const host = document.createElement("div");
   host.id = "rsh-floating-tools";
   host.style.cssText =
-    "position:fixed!important;right:16px;top:42vh;z-index:2147483646!important;";
+    "position:fixed!important;right:16px;bottom:24px;z-index:2147483646!important;";
   const shadow = host.attachShadow({ mode: "open" });
   shadow.innerHTML = `<style>
       :host{font-family:system-ui,"Microsoft YaHei",sans-serif;font-size:13px;color:#e6f6ff;}
@@ -69,56 +70,7 @@ export function installFloatingUi(api) {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && panel.style.display === "block") api.close();
   });
-  const key = "__rsh_floating_position_v1";
-  let position = api.read(key, null);
-  if (!position || !Number.isFinite(position.x) || !Number.isFinite(position.y))
-    position = null;
-  function place(x, y) {
-    const box = host.getBoundingClientRect();
-    position = {
-      x: Math.max(4, Math.min(x, innerWidth - box.width - 4)),
-      y: Math.max(4, Math.min(y, innerHeight - box.height - 4)),
-    };
-    host.style.right = "auto";
-    host.style.left = position.x + "px";
-    host.style.top = position.y + "px";
-  }
-  if (position) place(position.x, position.y);
-  const handle = shadow.querySelector(".handle");
-  let drag = null;
-  handle.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0) return;
-    const box = host.getBoundingClientRect();
-    drag = { x: event.clientX, y: event.clientY, left: box.left, top: box.top };
-    handle.setPointerCapture(event.pointerId);
-    event.preventDefault();
-  });
-  handle.addEventListener("pointermove", (event) => {
-    if (drag)
-      place(
-        drag.left + event.clientX - drag.x,
-        drag.top + event.clientY - drag.y,
-      );
-  });
-  function finish() {
-    if (drag) {
-      drag = null;
-      if (position) api.write(key, position);
-    }
-  }
-  handle.addEventListener("pointerup", finish);
-  handle.addEventListener("pointercancel", finish);
-  handle.addEventListener("lostpointercapture", finish);
-  handle.addEventListener("dblclick", () => {
-    position = null;
-    host.style.left = "auto";
-    host.style.right = "16px";
-    host.style.top = "42vh";
-    api.write(key, { reset: true });
-  });
-  window.addEventListener("resize", () => {
-    if (position) place(position.x, position.y);
-  });
+  installFloatingPosition(host, api);
   api.createLikes();
   api.initialize();
 }

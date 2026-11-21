@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         B站直播间定时发随机弹幕（悬浮维护版）
 // @namespace    https://live.bilibili.com/暂无主页
-// @version      3.0.0
+// @version      3.0.1
 // @description  右侧可拖动悬浮入口；随机/顺序定时弹幕、零点打卡、弹幕分组、随机/定时点赞及运行诊断；各直播间设置独立保存，附带原版直播间简化功能。
 // @author       Gamyou (original), Yuiffy (maintenance)
 // @license      Apache-2.0
@@ -18,7 +18,7 @@
 
 /*
  * Original author: Gamyou. Upstream module 1.7.5.3, Apache-2.0.
- * Modified by Yuiffy on 2026-11-18. All functional code is included below.
+ * Modified by Yuiffy on 2026-11-18 and 2026-11-21. All functional code is included below.
  * Source and modification notices: https://github.com/Yuiffy/bilibili-live-random-send
  * Distributed under the Apache License, Version 2.0.
  * License text: https://www.apache.org/licenses/LICENSE-2.0

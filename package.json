@@ -1,6 +1,6 @@
 {
   "name": "bilibili-live-random-send-floating",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "type": "module",
   "description": "Gamyou 原版用户脚本的悬浮维护分支：独立入口、完整源码与随机点赞修复。",

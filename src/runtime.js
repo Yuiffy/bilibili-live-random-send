@@ -654,7 +654,7 @@ export function createRuntime(storage, pageWindow) {
       divElement.textContent = "弹幕设置";
       divElement.classList.add("danmu-random-setting-title");
       let divElement2 = document.createElement("div");
-      divElement2.textContent = "3.0.0";
+      divElement2.textContent = "3.0.1";
       divElement2.classList.add("danmu-random-setting-title-sub");
       divElement.appendChild(divElement2);
       let divElement3 = document.createElement("div");

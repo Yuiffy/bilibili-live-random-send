@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         B站直播间定时发随机弹幕（悬浮维护版）
 // @namespace    https://live.bilibili.com/暂无主页
-// @version      3.0.0
+// @version      3.0.1
 // @description  右侧可拖动悬浮入口；随机/顺序定时弹幕、零点打卡、弹幕分组、随机/定时点赞及运行诊断；各直播间设置独立保存，附带原版直播间简化功能。
 // @author       Gamyou (original), Yuiffy (maintenance)
 // @license      Apache-2.0
@@ -18,7 +18,7 @@
 
 /*
  * Original author: Gamyou. Upstream module 1.7.5.3, Apache-2.0.
- * Modified by Yuiffy on 2026-11-18. All functional code is included below.
+ * Modified by Yuiffy on 2026-11-18 and 2026-11-21. All functional code is included below.
  * Source and modification notices: https://github.com/Yuiffy/bilibili-live-random-send
  * Distributed under the Apache License, Version 2.0.
  * License text: https://www.apache.org/licenses/LICENSE-2.0
@@ -125,6 +125,90 @@
     };
   }
 
+  // src/floating-position.js
+  function installFloatingPosition(host, api) {
+    const key = "__rsh_floating_position_v2";
+    const defaultPosition = () => ({
+      horizontal: "right",
+      vertical: "bottom",
+      x: 16,
+      y: 24
+    });
+    const valid = (value) => value && ["left", "right"].includes(value.horizontal) && ["top", "bottom"].includes(value.vertical) && Number.isFinite(value.x) && value.x >= 0 && Number.isFinite(value.y) && value.y >= 0;
+    function clamp(value, available) {
+      const margin = Math.min(4, Math.max(0, available / 2));
+      return Math.max(margin, Math.min(value, available - margin));
+    }
+    function fromCoordinates(x, y) {
+      const { width, height } = host.getBoundingClientRect();
+      const availableX = Math.max(0, window.innerWidth - width);
+      const availableY = Math.max(0, window.innerHeight - height);
+      x = clamp(x, availableX);
+      y = clamp(y, availableY);
+      const horizontal = x <= availableX / 2 ? "left" : "right";
+      const vertical = y <= availableY / 2 ? "top" : "bottom";
+      return {
+        horizontal,
+        vertical,
+        x: horizontal === "left" ? x : availableX - x,
+        y: vertical === "top" ? y : availableY - y
+      };
+    }
+    let position = api.read(key, null);
+    if (!valid(position)) {
+      const legacy = api.read("__rsh_floating_position_v1", null);
+      position = legacy && Number.isFinite(legacy.x) && Number.isFinite(legacy.y) ? fromCoordinates(legacy.x, legacy.y) : defaultPosition();
+      api.write(key, position);
+    }
+    function render() {
+      const { width, height } = host.getBoundingClientRect();
+      const x = clamp(position.x, Math.max(0, window.innerWidth - width));
+      const y = clamp(position.y, Math.max(0, window.innerHeight - height));
+      for (const side of ["left", "right", "top", "bottom"])
+        host.style[side] = "auto";
+      host.style[position.horizontal] = x + "px";
+      host.style[position.vertical] = y + "px";
+    }
+    render();
+    const handle = host.shadowRoot.querySelector(".handle");
+    let drag = null;
+    handle.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) return;
+      const box = host.getBoundingClientRect();
+      drag = { x: event.clientX, y: event.clientY, left: box.left, top: box.top };
+      handle.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+    handle.addEventListener("pointermove", (event) => {
+      if (!drag) return;
+      position = fromCoordinates(
+        drag.left + event.clientX - drag.x,
+        drag.top + event.clientY - drag.y
+      );
+      render();
+    });
+    function finish() {
+      if (!drag) return;
+      drag = null;
+      api.write(key, position);
+    }
+    for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) {
+      handle.addEventListener(type, finish);
+    }
+    handle.addEventListener("dblclick", () => {
+      drag = null;
+      position = defaultPosition();
+      render();
+      api.write(key, position);
+    });
+    window.addEventListener("resize", () => {
+      finish();
+      render();
+    });
+    if (typeof ResizeObserver !== "undefined")
+      new ResizeObserver(render).observe(host);
+  }
+
   // src/floating-ui.js
   function installFloatingUi(api) {
     if (document.getElementById("rsh-floating-tools")) return;
@@ -134,7 +218,7 @@
     const start2 = api.getStart();
     const host = document.createElement("div");
     host.id = "rsh-floating-tools";
-    host.style.cssText = "position:fixed!important;right:16px;top:42vh;z-index:2147483646!important;";
+    host.style.cssText = "position:fixed!important;right:16px;bottom:24px;z-index:2147483646!important;";
     const shadow = host.attachShadow({ mode: "open" });
     shadow.innerHTML = `<style>
       :host{font-family:system-ui,"Microsoft YaHei",sans-serif;font-size:13px;color:#e6f6ff;}
@@ -194,56 +278,7 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && panel.style.display === "block") api.close();
     });
-    const key = "__rsh_floating_position_v1";
-    let position = api.read(key, null);
-    if (!position || !Number.isFinite(position.x) || !Number.isFinite(position.y))
-      position = null;
-    function place(x, y) {
-      const box = host.getBoundingClientRect();
-      position = {
-        x: Math.max(4, Math.min(x, innerWidth - box.width - 4)),
-        y: Math.max(4, Math.min(y, innerHeight - box.height - 4))
-      };
-      host.style.right = "auto";
-      host.style.left = position.x + "px";
-      host.style.top = position.y + "px";
-    }
-    if (position) place(position.x, position.y);
-    const handle = shadow.querySelector(".handle");
-    let drag = null;
-    handle.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0) return;
-      const box = host.getBoundingClientRect();
-      drag = { x: event.clientX, y: event.clientY, left: box.left, top: box.top };
-      handle.setPointerCapture(event.pointerId);
-      event.preventDefault();
-    });
-    handle.addEventListener("pointermove", (event) => {
-      if (drag)
-        place(
-          drag.left + event.clientX - drag.x,
-          drag.top + event.clientY - drag.y
-        );
-    });
-    function finish() {
-      if (drag) {
-        drag = null;
-        if (position) api.write(key, position);
-      }
-    }
-    handle.addEventListener("pointerup", finish);
-    handle.addEventListener("pointercancel", finish);
-    handle.addEventListener("lostpointercapture", finish);
-    handle.addEventListener("dblclick", () => {
-      position = null;
-      host.style.left = "auto";
-      host.style.right = "16px";
-      host.style.top = "42vh";
-      api.write(key, { reset: true });
-    });
-    window.addEventListener("resize", () => {
-      if (position) place(position.x, position.y);
-    });
+    installFloatingPosition(host, api);
     api.createLikes();
     api.initialize();
   }
@@ -718,7 +753,7 @@
       divElement.textContent = "弹幕设置";
       divElement.classList.add("danmu-random-setting-title");
       let divElement2 = document.createElement("div");
-      divElement2.textContent = "3.0.0";
+      divElement2.textContent = "3.0.1";
       divElement2.classList.add("danmu-random-setting-title-sub");
       divElement.appendChild(divElement2);
       let divElement3 = document.createElement("div");

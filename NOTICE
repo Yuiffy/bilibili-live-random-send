@@ -13,3 +13,7 @@ Modifications by Yuiffy, 2026-11-18:
 - Added migration, draft protection, diagnostics, tests and build tooling.
 
 This fork is maintained independently and is not an official upstream release.
+
+Modifications by Yuiffy, 2026-11-21 (3.0.1):
+- Persist nearest-edge gaps for floating controls across viewport resizes.
+- Migrate previous coordinates, preserve preferred gaps while clamped, and reset to bottom-right.

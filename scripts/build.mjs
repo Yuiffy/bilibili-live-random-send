@@ -24,7 +24,7 @@ const header = `// ==UserScript==
 
 /*
  * Original author: Gamyou. Upstream module 1.7.5.3, Apache-2.0.
- * Modified by Yuiffy on 2026-11-18. All functional code is included below.
+ * Modified by Yuiffy on 2026-11-18 and 2026-11-21. All functional code is included below.
  * Source and modification notices: https://github.com/Yuiffy/bilibili-live-random-send
  * Distributed under the Apache License, Version 2.0.
  * License text: https://www.apache.org/licenses/LICENSE-2.0
